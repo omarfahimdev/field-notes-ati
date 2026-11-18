@@ -1,8 +1,10 @@
-import 'package:field_notes/features/home/presentations/home_screen.dart';
+import 'package:field_notes/features/counter/application/bloc/counter_bloc.dart';
+import 'package:field_notes/features/counter/presentation/screens/counter_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(BlocProvider(create: (context) => CounterBloc(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,8 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: HomeScreen(),
+      home: CounterScreen(),
     );
   }
 }
