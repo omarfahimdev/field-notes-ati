@@ -4,14 +4,15 @@ class ButtonThemeBuilder {
   ButtonThemeBuilder._();
 
   static const _radius = 14.0;
-  static const _minHeight = 52.0;
+  static const _minHeight = 44.0;
 
   static FilledButtonThemeData filled(ColorScheme colorScheme) {
     return FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.onPrimary,
-        minimumSize: const Size.fromHeight(_minHeight),
+        minimumSize: const Size(0, _minHeight),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(_radius)),
         textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
       ),
@@ -26,7 +27,8 @@ class ButtonThemeBuilder {
         disabledBackgroundColor: colorScheme.onSurface.withValues(alpha: 0.12),
         disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
         elevation: 0,
-        minimumSize: const Size.fromHeight(_minHeight),
+        minimumSize: const Size(0, _minHeight),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(_radius)),
         textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
       ),
@@ -37,7 +39,8 @@ class ButtonThemeBuilder {
     return OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: colorScheme.onSurface,
-        minimumSize: const Size.fromHeight(_minHeight),
+        minimumSize: const Size(0, _minHeight),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         side: BorderSide(color: colorScheme.outlineVariant),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(_radius)),
         textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),

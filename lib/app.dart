@@ -1,5 +1,5 @@
 import 'package:field_notes/core/constants/app_info.dart';
-import 'package:field_notes/features/auth/presentation/login_screen.dart';
+import 'package:field_notes/features/notes/presentation/screens/notes_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'core/constants/global_context.dart';
@@ -24,7 +24,7 @@ class _AppState extends State<App> {
       themeAnimationCurve: Curves.easeInOutCubic,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      home: LoginScreen(),
+      home: NotesScreen(),
       // ========== BUILDER
       builder: (context, child) {
         if (child == null) return const SizedBox.shrink(); // Null-guard for initial routing asserts

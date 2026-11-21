@@ -10,7 +10,7 @@ class InputDecorationThemeBuilder {
       filled: true,
       fillColor: colorScheme.onPrimary,
       prefixIconColor: colorScheme.primary,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       hintStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
       labelStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
       errorStyle: textTheme.bodySmall?.copyWith(color: colorScheme.error),

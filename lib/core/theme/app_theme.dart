@@ -4,6 +4,7 @@ import 'app_typography.dart';
 import 'color_builders/semantic_colors.dart';
 import 'color_schemes.dart';
 import 'theme_builders/app_bar_theme.dart';
+import 'theme_builders/button_themes.dart';
 import 'theme_builders/input_decoration_theme.dart';
 
 /// `main.dart`.
@@ -32,7 +33,7 @@ class AppTheme {
       // component_themes/ so this composition stays readable as the
       // app grows past a dozen customized widgets.
       appBarTheme: AppBarThemeBuilder.build(colorScheme, textTheme),
-      // filledButtonTheme: ButtonThemeBuilder.filled(colorScheme),
+      filledButtonTheme: ButtonThemeBuilder.filled(colorScheme),
       // elevatedButtonTheme: ButtonThemeBuilder.elevated(colorScheme),
       // outlinedButtonTheme: ButtonThemeBuilder.outlined(colorScheme),
       // textButtonTheme: ButtonThemeBuilder.text(colorScheme),
