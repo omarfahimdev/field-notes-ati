@@ -8,14 +8,14 @@ part of 'site.dart';
 
 _Site _$SiteFromJson(Map<String, dynamic> json) => _Site(
   id: (json['id'] as num).toInt(),
-  siteName: json['siteName'] as String,
+  name: json['name'] as String,
   address: json['address'] as String,
   customer: Customer.fromJson(json['customer'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$SiteToJson(_Site instance) => <String, dynamic>{
   'id': instance.id,
-  'siteName': instance.siteName,
+  'name': instance.name,
   'address': instance.address,
   'customer': instance.customer,
 };

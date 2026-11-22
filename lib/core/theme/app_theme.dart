@@ -54,7 +54,7 @@ class AppTheme {
       // actionIconTheme: ActionIconThemeData(
       //   backButtonIconBuilder: (context) => const AppBackButton(),
       // ),
-
+      floatingActionButtonTheme: FloatingActionButtonThemeData(foregroundColor: colorScheme.surface),
       // Extensions carry anything `ColorScheme`/`TextTheme` don't model
       // — currently just the success/warning/info semantic colors.
       // Add future cross-cutting tokens (spacing, radii) as additional

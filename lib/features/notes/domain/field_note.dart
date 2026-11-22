@@ -18,7 +18,7 @@ abstract class FieldNote with _$FieldNote {
     required String description,
     Location? location,
     DateTime? occurredAt,
-    NoteStatus? status,
+    @Default(NoteStatus.draft) NoteStatus status,
     String? photoUrl,
   }) = _FieldNote;
 

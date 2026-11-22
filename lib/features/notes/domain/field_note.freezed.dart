@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FieldNote {
 
- int get id; Site get site; String get title; String get description; Location? get location; DateTime? get occurredAt; NoteStatus? get status; String? get photoUrl;
+ int get id; Site get site; String get title; String get description; Location? get location; DateTime? get occurredAt; NoteStatus get status; String? get photoUrl;
 /// Create a copy of FieldNote
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $FieldNoteCopyWith<$Res>  {
   factory $FieldNoteCopyWith(FieldNote value, $Res Function(FieldNote) _then) = _$FieldNoteCopyWithImpl;
 @useResult
 $Res call({
- int id, Site site, String title, String description, Location? location, DateTime? occurredAt, NoteStatus? status, String? photoUrl
+ int id, Site site, String title, String description, Location? location, DateTime? occurredAt, NoteStatus status, String? photoUrl
 });
 
 
@@ -71,7 +71,7 @@ class _$FieldNoteCopyWithImpl<$Res>
 
 /// Create a copy of FieldNote
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? site = null,Object? title = null,Object? description = null,Object? location = freezed,Object? occurredAt = freezed,Object? status = freezed,Object? photoUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? site = null,Object? title = null,Object? description = null,Object? location = freezed,Object? occurredAt = freezed,Object? status = null,Object? photoUrl = freezed,}) {
   return _then(FieldNote(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,site: null == site ? _self.site : site // ignore: cast_nullable_to_non_nullable
@@ -79,8 +79,8 @@ as Site,title: null == title ? _self.title : title // ignore: cast_nullable_to_n
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as Location?,occurredAt: freezed == occurredAt ? _self.occurredAt : occurredAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as NoteStatus?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
+as DateTime?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as NoteStatus,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -187,7 +187,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  Site site,  String title,  String description,  Location? location,  DateTime? occurredAt,  NoteStatus? status,  String? photoUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  Site site,  String title,  String description,  Location? location,  DateTime? occurredAt,  NoteStatus status,  String? photoUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FieldNote() when $default != null:
 return $default(_that.id,_that.site,_that.title,_that.description,_that.location,_that.occurredAt,_that.status,_that.photoUrl);case _:
@@ -208,7 +208,7 @@ return $default(_that.id,_that.site,_that.title,_that.description,_that.location
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  Site site,  String title,  String description,  Location? location,  DateTime? occurredAt,  NoteStatus? status,  String? photoUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  Site site,  String title,  String description,  Location? location,  DateTime? occurredAt,  NoteStatus status,  String? photoUrl)  $default,) {final _that = this;
 switch (_that) {
 case _FieldNote():
 return $default(_that.id,_that.site,_that.title,_that.description,_that.location,_that.occurredAt,_that.status,_that.photoUrl);case _:
@@ -228,7 +228,7 @@ return $default(_that.id,_that.site,_that.title,_that.description,_that.location
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  Site site,  String title,  String description,  Location? location,  DateTime? occurredAt,  NoteStatus? status,  String? photoUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  Site site,  String title,  String description,  Location? location,  DateTime? occurredAt,  NoteStatus status,  String? photoUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _FieldNote() when $default != null:
 return $default(_that.id,_that.site,_that.title,_that.description,_that.location,_that.occurredAt,_that.status,_that.photoUrl);case _:
@@ -243,7 +243,7 @@ return $default(_that.id,_that.site,_that.title,_that.description,_that.location
 @JsonSerializable()
 
 class _FieldNote extends FieldNote {
-   _FieldNote({required this.id, required this.site, required this.title, required this.description, this.location, this.occurredAt, this.status, this.photoUrl}): super._();
+   _FieldNote({required this.id, required this.site, required this.title, required this.description, this.location, this.occurredAt, this.status = NoteStatus.draft, this.photoUrl}): super._();
   factory _FieldNote.fromJson(Map<String, dynamic> json) => _$FieldNoteFromJson(json);
 
 @override final  int id;
@@ -252,7 +252,7 @@ class _FieldNote extends FieldNote {
 @override final  String description;
 @override final  Location? location;
 @override final  DateTime? occurredAt;
-@override final  NoteStatus? status;
+@override@JsonKey() final  NoteStatus status;
 @override final  String? photoUrl;
 
 /// Create a copy of FieldNote
@@ -290,7 +290,7 @@ abstract mixin class _$FieldNoteCopyWith<$Res> implements $FieldNoteCopyWith<$Re
   factory _$FieldNoteCopyWith(_FieldNote value, $Res Function(_FieldNote) _then) = __$FieldNoteCopyWithImpl;
 @override @useResult
 $Res call({
- int id, Site site, String title, String description, Location? location, DateTime? occurredAt, NoteStatus? status, String? photoUrl
+ int id, Site site, String title, String description, Location? location, DateTime? occurredAt, NoteStatus status, String? photoUrl
 });
 
 
@@ -307,7 +307,7 @@ class __$FieldNoteCopyWithImpl<$Res>
 
 /// Create a copy of FieldNote
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? site = null,Object? title = null,Object? description = null,Object? location = freezed,Object? occurredAt = freezed,Object? status = freezed,Object? photoUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? site = null,Object? title = null,Object? description = null,Object? location = freezed,Object? occurredAt = freezed,Object? status = null,Object? photoUrl = freezed,}) {
   return _then(_FieldNote(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,site: null == site ? _self.site : site // ignore: cast_nullable_to_non_nullable
@@ -315,8 +315,8 @@ as Site,title: null == title ? _self.title : title // ignore: cast_nullable_to_n
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as Location?,occurredAt: freezed == occurredAt ? _self.occurredAt : occurredAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as NoteStatus?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
+as DateTime?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as NoteStatus,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

@@ -7,8 +7,13 @@ part 'customer.g.dart';
 abstract class Customer with _$Customer {
   const Customer._();
 
-  factory Customer({required int id, required String fullName, required String phone, required String email}) =
-      _Customer;
+  factory Customer({
+    required int id,
+    required String fullName,
+    required String phone,
+    required String email,
+    String? address,
+  }) = _Customer;
 
   factory Customer.fromJson(Map<String, dynamic> json) => _$CustomerFromJson(json);
 }

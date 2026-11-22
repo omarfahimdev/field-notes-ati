@@ -1,4 +1,4 @@
-import 'package:field_notes/features/auth/presentation/login_screen.dart';
+import 'package:field_notes/app/app_shell.dart';
 import 'package:flutter/material.dart';
 
 class AuthGate extends StatelessWidget {
@@ -6,6 +6,6 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LoginScreen();
+    return AppShell();
   }
 }

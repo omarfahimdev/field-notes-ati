@@ -17,7 +17,9 @@ _FieldNote _$FieldNoteFromJson(Map<String, dynamic> json) => _FieldNote(
   occurredAt: json['occurredAt'] == null
       ? null
       : DateTime.parse(json['occurredAt'] as String),
-  status: $enumDecodeNullable(_$NoteStatusEnumMap, json['status']),
+  status:
+      $enumDecodeNullable(_$NoteStatusEnumMap, json['status']) ??
+      NoteStatus.draft,
   photoUrl: json['photoUrl'] as String?,
 );
 
@@ -29,7 +31,7 @@ Map<String, dynamic> _$FieldNoteToJson(_FieldNote instance) =>
       'description': instance.description,
       'location': instance.location,
       'occurredAt': instance.occurredAt?.toIso8601String(),
-      'status': _$NoteStatusEnumMap[instance.status],
+      'status': _$NoteStatusEnumMap[instance.status]!,
       'photoUrl': instance.photoUrl,
     };
 

@@ -12,6 +12,7 @@ class AppBarThemeBuilder {
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       scrolledUnderElevation: 0,
+      backgroundColor: Colors.transparent,
       // titleSpacing: 0,
       // titleSpacing: 14,
       actionsPadding: const EdgeInsets.only(right: AppConstants.screenMarginPoint),

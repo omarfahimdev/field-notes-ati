@@ -3,6 +3,8 @@ import 'package:field_notes/core/theme/app_theme_extensions.dart';
 import 'package:field_notes/core/utils/widgets/custom_search_field.dart';
 import 'package:field_notes/features/customers/domain/customer.dart';
 import 'package:field_notes/features/notes/domain/field_note.dart';
+import 'package:field_notes/features/notes/presentation/screens/note_details_screen.dart';
+import 'package:field_notes/features/notes/presentation/screens/note_form_screen.dart';
 import 'package:field_notes/features/notes/presentation/widgets/note_widget.dart';
 import 'package:field_notes/features/sites/domain/site.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,7 @@ class _NotesScreenState extends State<NotesScreen> {
         id: index,
         site: Site(
           id: index,
-          siteName: 'siteName',
+          name: 'siteName',
           address: 'address',
           customer: Customer(id: index, fullName: 'fullName', phone: 'phone', email: 'email'),
         ),
@@ -52,10 +54,14 @@ class _NotesScreenState extends State<NotesScreen> {
         ),
         actions: [SyncActionButton(onPressed: () {})],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+      floatingActionButton: FloatingActionButton.extended(
+        // AppShell keeps this screen mounted next to CustomersScreen in an
+        // IndexedStack, so the FAB tag must be unique within the shared route.
+        heroTag: 'notes-add-note',
+        onPressed: _onAddNote,
         backgroundColor: context.colorScheme.primary,
-        child: Icon(Icons.add, color: context.colorScheme.onPrimary),
+        icon: Icon(Icons.add, color: context.colorScheme.onPrimary),
+        label: Text('New note'),
       ),
       body: Container(
         padding: AppConstants.screenMargin(),
@@ -69,7 +75,8 @@ class _NotesScreenState extends State<NotesScreen> {
                 separatorBuilder: (context, index) => SizedBox(height: 10),
                 padding: EdgeInsets.only(bottom: 120),
                 itemCount: notes.length,
-                itemBuilder: (context, index) => Note(note: notes.elementAt(index)),
+                itemBuilder: (context, index) =>
+                    Note(note: notes.elementAt(index), onTap: () => openNoteDetails(context, index)),
               ),
             ),
             // const SizedBox(height: AppSpacing.md),
@@ -81,4 +88,6 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
     );
   }
+
+  void _onAddNote() => openNoteForm(context);
 }

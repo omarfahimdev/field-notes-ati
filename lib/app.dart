@@ -1,5 +1,4 @@
 import 'package:field_notes/core/constants/app_info.dart';
-import 'package:field_notes/features/notes/presentation/screens/notes_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'app/auth_gate.dart';

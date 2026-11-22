@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 
 class Note extends StatelessWidget {
   final FieldNote note;
-  const new({super.key, required this.note});
+  final VoidCallback onTap;
+  const new({super.key, required this.note, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +16,13 @@ class Note extends StatelessWidget {
     final textTheme = context.textTheme;
 
     return MyInkWellButton(
+      onTap: onTap,
       backgroundColor: colorScheme.surfaceContainerLowest,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black87.withValues(alpha: 0.1)),
         boxShadow: [BoxShadow(color: Colors.black87)],
         borderRadius: BorderRadius.circular(12),
       ),
-      onTap: () {},
       padding: EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

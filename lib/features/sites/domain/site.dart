@@ -8,8 +8,7 @@ part 'site.g.dart';
 abstract class Site with _$Site {
   const Site._();
 
-  factory Site({required int id, required String siteName, required String address, required Customer customer}) =
-      _Site;
+  factory Site({required int id, required String name, required String address, required Customer customer}) = _Site;
 
   factory Site.fromJson(Map<String, dynamic> json) => _$SiteFromJson(json);
 }
