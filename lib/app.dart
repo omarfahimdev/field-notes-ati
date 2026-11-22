@@ -2,6 +2,7 @@ import 'package:field_notes/core/constants/app_info.dart';
 import 'package:field_notes/features/notes/presentation/screens/notes_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'app/auth_gate.dart';
 import 'core/constants/global_context.dart';
 import 'core/theme/app_theme.dart';
 
@@ -24,7 +25,7 @@ class _AppState extends State<App> {
       themeAnimationCurve: Curves.easeInOutCubic,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      home: NotesScreen(),
+      home: AuthGate(),
       // ========== BUILDER
       builder: (context, child) {
         if (child == null) return const SizedBox.shrink(); // Null-guard for initial routing asserts

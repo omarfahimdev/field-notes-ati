@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppConstants {
-  static const screenMarginPoint = 20.0;
+  static const screenMarginPoint = 10.0;
+  static const borderRadiusPoint = 16.0;
+
+  static const borderRadius = BorderRadius.all(Radius.circular(borderRadiusPoint));
 
   static EdgeInsets screenMargin({
     double? left,
