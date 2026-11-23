@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Location {
 
- String? get locationLabel; double? get latitude; double? get longitude;
+ String? get label; double? get latitude; double? get longitude;
 /// Create a copy of Location
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +30,20 @@ $LocationCopyWith<Location> get copyWith => _$LocationCopyWithImpl<Location>(thi
 @override
 bool operator ==(Object other) {
   final _this = this as Location;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Location&&(identical(other.locationLabel, _this.locationLabel) || other.locationLabel == _this.locationLabel)&&(identical(other.latitude, _this.latitude) || other.latitude == _this.latitude)&&(identical(other.longitude, _this.longitude) || other.longitude == _this.longitude));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Location&&(identical(other.label, _this.label) || other.label == _this.label)&&(identical(other.latitude, _this.latitude) || other.latitude == _this.latitude)&&(identical(other.longitude, _this.longitude) || other.longitude == _this.longitude));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as Location;
-  return Object.hash(runtimeType,_this.locationLabel,_this.latitude,_this.longitude);
+  return Object.hash(runtimeType,_this.label,_this.latitude,_this.longitude);
 }
 
 @override
 String toString() {
   final _this = this as Location;
-  return 'Location(locationLabel: ${_this.locationLabel}, latitude: ${_this.latitude}, longitude: ${_this.longitude})';
+  return 'Location(label: ${_this.label}, latitude: ${_this.latitude}, longitude: ${_this.longitude})';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $LocationCopyWith<$Res>  {
   factory $LocationCopyWith(Location value, $Res Function(Location) _then) = _$LocationCopyWithImpl;
 @useResult
 $Res call({
- String? locationLabel, double? latitude, double? longitude
+ String? label, double? latitude, double? longitude
 });
 
 
@@ -71,9 +71,9 @@ class _$LocationCopyWithImpl<$Res>
 
 /// Create a copy of Location
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? locationLabel = freezed,Object? latitude = freezed,Object? longitude = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? label = freezed,Object? latitude = freezed,Object? longitude = freezed,}) {
   return _then(Location(
-locationLabel: freezed == locationLabel ? _self.locationLabel : locationLabel // ignore: cast_nullable_to_non_nullable
+label: freezed == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
 as String?,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
 as double?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
 as double?,
@@ -161,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? locationLabel,  double? latitude,  double? longitude)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? label,  double? latitude,  double? longitude)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Location() when $default != null:
-return $default(_that.locationLabel,_that.latitude,_that.longitude);case _:
+return $default(_that.label,_that.latitude,_that.longitude);case _:
   return orElse();
 
 }
@@ -182,10 +182,10 @@ return $default(_that.locationLabel,_that.latitude,_that.longitude);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? locationLabel,  double? latitude,  double? longitude)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? label,  double? latitude,  double? longitude)  $default,) {final _that = this;
 switch (_that) {
 case _Location():
-return $default(_that.locationLabel,_that.latitude,_that.longitude);case _:
+return $default(_that.label,_that.latitude,_that.longitude);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +202,10 @@ return $default(_that.locationLabel,_that.latitude,_that.longitude);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? locationLabel,  double? latitude,  double? longitude)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? label,  double? latitude,  double? longitude)?  $default,) {final _that = this;
 switch (_that) {
 case _Location() when $default != null:
-return $default(_that.locationLabel,_that.latitude,_that.longitude);case _:
+return $default(_that.label,_that.latitude,_that.longitude);case _:
   return null;
 
 }
@@ -217,10 +217,10 @@ return $default(_that.locationLabel,_that.latitude,_that.longitude);case _:
 @JsonSerializable()
 
 class _Location extends Location {
-   _Location({this.locationLabel, this.latitude, this.longitude}): super._();
+   _Location({this.label, this.latitude, this.longitude}): super._();
   factory _Location.fromJson(Map<String, dynamic> json) => _$LocationFromJson(json);
 
-@override final  String? locationLabel;
+@override final  String? label;
 @override final  double? latitude;
 @override final  double? longitude;
 
@@ -237,18 +237,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Location&&(identical(other.locationLabel, locationLabel) || other.locationLabel == locationLabel)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Location&&(identical(other.label, label) || other.label == label)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,locationLabel,latitude,longitude);
+    return Object.hash(runtimeType,label,latitude,longitude);
 }
 
 @override
 String toString() {
-    return 'Location(locationLabel: $locationLabel, latitude: $latitude, longitude: $longitude)';
+    return 'Location(label: $label, latitude: $latitude, longitude: $longitude)';
 }
 
 
@@ -259,7 +259,7 @@ abstract mixin class _$LocationCopyWith<$Res> implements $LocationCopyWith<$Res>
   factory _$LocationCopyWith(_Location value, $Res Function(_Location) _then) = __$LocationCopyWithImpl;
 @override @useResult
 $Res call({
- String? locationLabel, double? latitude, double? longitude
+ String? label, double? latitude, double? longitude
 });
 
 
@@ -276,9 +276,9 @@ class __$LocationCopyWithImpl<$Res>
 
 /// Create a copy of Location
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? locationLabel = freezed,Object? latitude = freezed,Object? longitude = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? label = freezed,Object? latitude = freezed,Object? longitude = freezed,}) {
   return _then(_Location(
-locationLabel: freezed == locationLabel ? _self.locationLabel : locationLabel // ignore: cast_nullable_to_non_nullable
+label: freezed == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
 as String?,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
 as double?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
 as double?,

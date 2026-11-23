@@ -59,6 +59,22 @@ enum NoteStatus {
     for (final status in NoteStatus.values) {
       if (status.apiValue == raw || status.name == raw) return status;
     }
+    // API values: draft, inProgress, completed, followUp
+    switch (raw) {
+      case 'draft': return NoteStatus.draft;
+      case 'inProgress': return NoteStatus.inProgress;
+      case 'completed': return NoteStatus.completed;
+      case 'followUp': return NoteStatus.followUp;
+    }
     return fallback;
+  }
+
+  String get apiName {
+    switch (this) {
+      case NoteStatus.draft: return 'draft';
+      case NoteStatus.inProgress: return 'inProgress';
+      case NoteStatus.completed: return 'completed';
+      case NoteStatus.followUp: return 'followUp';
+    }
   }
 }

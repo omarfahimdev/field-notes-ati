@@ -6,7 +6,7 @@ part 'location.g.dart';
 @freezed
 abstract class Location with _$Location {
   const Location._();
-  factory Location({String? locationLabel, double? latitude, double? longitude}) = _Location;
+  factory Location({String? label, double? latitude, double? longitude}) = _Location;
 
   factory Location.fromJson(Map<String, dynamic> json) => _$LocationFromJson(json);
 
@@ -15,7 +15,7 @@ abstract class Location with _$Location {
   String? get coordinates => hasLocation ? '${latitude!.toStringAsFixed(5)}, ${longitude!.toStringAsFixed(5)}' : null;
 
   String get locationSummary {
-    if (locationLabel != null && locationLabel!.isNotEmpty) return locationLabel!;
+    if (label != null && label!.isNotEmpty) return label!;
     if (coordinates != null) return coordinates!;
     return 'No location attached';
   }

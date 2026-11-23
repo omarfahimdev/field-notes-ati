@@ -1,118 +1,56 @@
-import 'package:field_notes/core/theme/app_theme_extensions.dart';
-import 'package:field_notes/features/customers/domain/customer.dart';
-import 'package:field_notes/features/customers/presentation/screens/customer_details.dart';
-import 'package:field_notes/features/customers/presentation/screens/customer_form_screen.dart';
-import 'package:field_notes/features/customers/presentation/widgets/customer_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/utils/widgets/app_empty_state.dart';
 import '../../../../core/utils/widgets/custom_search_field.dart';
-import '../../../notes/presentation/widgets/sync_action_button.dart';
-import '../../../sites/presentation/screens/site_form_screen.dart';
+import '../../../notes/application/note_bloc.dart';
+import '../../../sites/application/site_bloc.dart';
+import '../../application/customer_bloc.dart';
+import '../widgets/customer_card.dart';
+import 'customer_details.dart';
+import 'customer_form_screen.dart';
 
 class CustomersScreen extends StatefulWidget {
-  const new({super.key});
-
+  const CustomersScreen({super.key});
   @override
   State<CustomersScreen> createState() => _CustomersScreenState();
 }
 
 class _CustomersScreenState extends State<CustomersScreen> {
+  String _q = '';
   @override
   Widget build(BuildContext context) {
-    final colorScheme = context.colorScheme;
-    final textTheme = context.textTheme;
-
-    final customer = Customer(
-      id: 1,
-      fullName: 'Fazle Elahi Fahim',
-      phone: '01839865200',
-      email: 'omar@gmail.com',
-      address: '',
-    );
-
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('Customers'),
-            const SizedBox(height: 1),
-            Text(
-              '2 Customers · 3 Sites',
-              style: textTheme.labelSmall?.copyWith(
-                fontSize: 11.5,
-                letterSpacing: 0.2,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            tooltip: 'New site',
-            onPressed: () => _onAddSite(customer),
-            icon: const Icon(Icons.add_location_alt_outlined),
-          ),
-          SyncActionButton(onPressed: () {}),
-        ],
+        title: BlocBuilder<CustomerBloc, CustomerState>(builder: (context, s) => Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+          const Text('Customers'),
+          Text('${s.items.length} Customers', style: textTheme.labelSmall?.copyWith(fontSize: 11.5)),
+        ])),
       ),
-
-      floatingActionButton: FloatingActionButton.extended(
-        // AppShell keeps this screen mounted next to NotesScreen in an
-        // IndexedStack, so the FAB tag must be unique within the shared route.
-        heroTag: 'customers-add-customer',
-        onPressed: _onAdd,
-        backgroundColor: colorScheme.primary,
-        icon: Icon(Icons.add, color: colorScheme.onPrimary),
-        label: Text('New customer'),
-      ),
-      body: Container(
+      floatingActionButton: FloatingActionButton.extended(heroTag: 'customers-add-customer', onPressed: () => openCustomerForm(context), icon: const Icon(Icons.add), label: const Text('New customer')),
+      body: Padding(
         padding: AppConstants.screenMargin(),
-        child: Column(
-          children: [
-            CustomSearchField(onChanged: (value) {}),
-            SizedBox(height: AppConstants.screenMarginPoint),
-            Expanded(
-              child: ListView.separated(
-                separatorBuilder: (context, index) => SizedBox(height: 10),
-                padding: EdgeInsets.only(bottom: 120),
-                itemCount: 5,
-                itemBuilder: (context, index) =>
-                    CustomerCard(customer: customer, onTap: _onTap),
-
-                // Note(note: notes.elementAt(index), onTap: () => openNoteDetails(context, index)),
-              ),
-            ),
-            // const SizedBox(height: AppSpacing.md),
-            // _FilterBar(state: state),
-            // const SizedBox(height: AppSpacing.sm),
-            // Expanded(child: _NotesList(state: state)),
-          ],
-        ),
+        child: Column(children: [
+          CustomSearchField(hintText: 'Search customers', onChanged: (v)=>setState(()=>_q=v)),
+          const SizedBox(height: 10),
+          Expanded(child: BlocBuilder<CustomerBloc, CustomerState>(builder: (context, state) {
+            if (state.loading) return const Center(child: CircularProgressIndicator());
+            final q = _q.trim().toLowerCase();
+            final items = state.items.where((c) => q.isEmpty || '${c.fullName} ${c.email} ${c.phone}'.toLowerCase().contains(q)).toList();
+            if (items.isEmpty) return const AppEmptyState(icon: Icons.people_outline_rounded, title: 'No customers', message: 'Add a customer to get started.');
+            final sites = context.watch<SiteBloc>().state.items;
+            final notes = context.watch<NoteBloc>().state.items;
+            return ListView.separated(padding: const EdgeInsets.only(bottom: 120), itemCount: items.length, separatorBuilder: (_, _)=>const SizedBox(height:10), itemBuilder: (context,i){
+              final c = items[i];
+              final siteCount = sites.where((s)=>s.customer.id==c.id).length;
+              final noteCount = notes.where((n)=>n.site.customer.id==c.id).length;
+              return CustomerCard(customer: c, siteCount: siteCount, noteCount: noteCount, onTap: () => openCustomerDetail(context, c));
+            });
+          })),
+        ]),
       ),
     );
   }
-
-  void _onAdd() => openCustomerForm(context);
-
-  Future<void> _onAddSite(Customer customer) async {
-    await openSiteForm(
-      context,
-      customers: [customer],
-      initialCustomer: customer,
-    );
-  }
-
-  void _onTap() => openCustomerDetail(
-    context,
-    Customer(
-      id: 1,
-      fullName: 'Fazle Elahi Fahim',
-      phone: '01839865200',
-      email: 'omar@gmail.com',
-      address: '',
-    ),
-  );
 }

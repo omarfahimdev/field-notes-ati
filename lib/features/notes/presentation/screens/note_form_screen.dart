@@ -123,7 +123,7 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
       _status = existing.status;
       _latitude = existing.location?.latitude;
       _longitude = existing.location?.longitude;
-      _locationLabel = existing.location?.locationLabel;
+      _locationLabel = existing.location?.label;
       _photoUrl = existing.photoUrl;
       _selectedSite = _findSiteById(existing.site.id) ?? existing.site;
     } else {
@@ -407,7 +407,7 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
       location = Location(
         latitude: _latitude,
         longitude: _longitude,
-        locationLabel: _locationLabel,
+        label: _locationLabel,
       );
     }
 

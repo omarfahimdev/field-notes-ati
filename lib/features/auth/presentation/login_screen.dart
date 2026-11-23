@@ -1,10 +1,10 @@
-import 'package:field_notes/core/utils/extensions/button_style_extension.dart';
-import 'package:field_notes/features/auth/presentation/forgot_password_screen.dart';
-import 'package:field_notes/features/auth/presentation/signup_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/constants/app_info.dart';
+import '../../../core/utils/extensions/button_style_extension.dart';
+import '../../../core/utils/validators.dart';
+import '../application/auth_bloc.dart';
+import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,188 +15,85 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _identifierController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  bool _obscurePassword = true;
-  bool _isSubmitting = false;
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  bool _obscure = true;
 
   @override
-  void dispose() {
-    _identifierController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
+  void dispose() { _email.dispose(); _password.dispose(); super.dispose(); }
 
-  Future<void> _handleSignIn() async {
+  void _submit() {
     FocusScope.of(context).unfocus();
     if (!(_formKey.currentState?.validate() ?? false)) return;
-
-    setState(() => _isSubmitting = true);
-    try {
-      await Future<void>.delayed(const Duration(milliseconds: 600));
-    } finally {
-      if (mounted) {
-        setState(() => _isSubmitting = false);
-      }
-    }
+    context.read<AuthBloc>().add(AuthLoginRequested(email: _email.text.trim(), password: _password.text));
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
-
+    final scheme = theme.colorScheme;
     return Scaffold(
-      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+            padding: const EdgeInsets.all(24),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 420),
-              child: AutofillGroup(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                            padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                              color: colorScheme.primaryContainer.withValues(alpha: 0.45),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(Icons.eco_rounded, size: 36, color: colorScheme.primary),
-                          )
-                          .animate()
-                          .fadeIn(duration: 400.ms, curve: Curves.easeOutCubic)
-                          .scale(
-                            begin: const Offset(0.88, 0.88),
-                            end: const Offset(1, 1),
-                            duration: 450.ms,
-                            curve: Curves.easeOutBack,
-                          ),
-                      const SizedBox(height: 12),
-                      Text(
-                            'Welcome back',
-                            textAlign: TextAlign.center,
-                            style: textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: colorScheme.onSurface,
-                            ),
-                          )
-                          .animate(delay: 90.ms)
-                          .fadeIn(duration: 400.ms, curve: Curves.easeOutCubic)
-                          .moveY(begin: 8, end: 0, duration: 400.ms, curve: Curves.easeOutCubic),
-                      const SizedBox(height: 6),
-                      Text(
-                            'Sign in to continue to ${AppInfo.name}',
-                            textAlign: TextAlign.center,
-                            style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
-                          )
-                          .animate(delay: 150.ms)
-                          .fadeIn(duration: 400.ms, curve: Curves.easeOutCubic)
-                          .moveY(begin: 8, end: 0, duration: 400.ms, curve: Curves.easeOutCubic),
-                      const SizedBox(height: 28),
-                      TextFormField(
-                            controller: _identifierController,
-                            enabled: !_isSubmitting,
-                            keyboardType: TextInputType.text,
-                            textInputAction: TextInputAction.next,
-                            autofillHints: const [
-                              AutofillHints.username,
-                              AutofillHints.email,
-                              AutofillHints.telephoneNumberLocal,
-                            ],
-                            decoration: InputDecoration(
-                              labelText: 'Email or phone',
-                              hintText: 'name@example.com',
-                              prefixIcon: const Icon(Icons.mail_outline_rounded),
-                            ),
-                            validator: (value) {
-                              final trimmed = value?.trim() ?? '';
-                              if (trimmed.isEmpty) return 'Enter your email or phone';
-                              return null;
-                            },
-                          )
-                          .animate(delay: 200.ms)
-                          .fadeIn(duration: 380.ms, curve: Curves.easeOutCubic)
-                          .moveY(begin: 10, end: 0, duration: 380.ms, curve: Curves.easeOutCubic),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                            controller: _passwordController,
-                            enabled: !_isSubmitting,
-                            obscureText: _obscurePassword,
-                            textInputAction: TextInputAction.done,
-                            autofillHints: const [AutofillHints.password],
-                            onFieldSubmitted: (_) => _handleSignIn(),
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                              prefixIcon: const Icon(Icons.lock_outline_rounded),
-                              suffixIcon: IconButton(
-                                onPressed: _isSubmitting
-                                    ? null
-                                    : () => setState(() => _obscurePassword = !_obscurePassword),
-                                tooltip: _obscurePassword ? 'Show password' : 'Hide password',
-                                icon: Icon(
-                                  _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                                  size: 18,
-                                ),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) return 'Enter your password';
-                              return null;
-                            },
-                          )
-                          .animate(delay: 260.ms)
-                          .fadeIn(duration: 380.ms, curve: Curves.easeOutCubic)
-                          .moveY(begin: 10, end: 0, duration: 380.ms, curve: Curves.easeOutCubic),
-                      const SizedBox(height: 8),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: _isSubmitting
-                              ? null
-                              : () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
-                                ),
-                          child: const Text('Forgot password?'),
+              child: BlocConsumer<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthFailure) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message), backgroundColor: scheme.error));
+                  }
+                },
+                builder: (context, state) {
+                  final loading = state is AuthLoading;
+                  return Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Icon(Icons.description_rounded, size: 48, color: scheme.primary),
+                        const SizedBox(height: 12),
+                        Text('Welcome back', textAlign: TextAlign.center, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 6),
+                        Text('Sign in to continue', textAlign: TextAlign.center, style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant)),
+                        const SizedBox(height: 28),
+                        TextFormField(
+                          controller: _email,
+                          enabled: !loading,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          decoration: const InputDecoration(labelText: 'Email', prefixIcon: Icon(Icons.mail_outline_rounded)),
+                          validator: Validators.email,
                         ),
-                      ).animate(delay: 300.ms).fadeIn(duration: 350.ms),
-                      const SizedBox(height: 12),
-                      FilledButton(
-                            onPressed: _isSubmitting ? null : _handleSignIn,
-                            child: const Text('Sign In', style: TextStyle(fontWeight: FontWeight.w600)),
-                          )
-                          .withLoading(_isSubmitting)
-                          .animate(delay: 330.ms)
-                          .fadeIn(duration: 380.ms, curve: Curves.easeOutCubic)
-                          .moveY(begin: 10, end: 0, duration: 380.ms, curve: Curves.easeOutCubic),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Don't have an account?",
-                            style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _password,
+                          enabled: !loading,
+                          obscureText: _obscure,
+                          textInputAction: TextInputAction.done,
+                          onFieldSubmitted: (_) => _submit(),
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            prefixIcon: const Icon(Icons.lock_outline_rounded),
+                            suffixIcon: IconButton(onPressed: () => setState(() => _obscure = !_obscure), icon: Icon(_obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined)),
                           ),
-                          TextButton(
-                            onPressed: _isSubmitting
-                                ? null
-                                : () =>
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(builder: (context) => SignUpScreen())),
-                            child: const Text('Sign Up'),
-                          ),
-                        ],
-                      ).animate(delay: 370.ms).fadeIn(duration: 350.ms),
-                    ],
-                  ),
-                ),
+                          validator: (v) => (v == null || v.isEmpty) ? 'Enter your password' : null,
+                        ),
+                        const SizedBox(height: 20),
+                        FilledButton(onPressed: loading ? null : _submit, child: const Text('Sign in')).withLoading(loading),
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Don't have an account?"),
+                            TextButton(onPressed: loading ? null : () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SignUpScreen())), child: const Text('Sign up')),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
           ),
