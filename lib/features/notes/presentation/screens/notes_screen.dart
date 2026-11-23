@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/theme/app_theme_extensions.dart';
@@ -38,7 +40,7 @@ class _NotesScreenState extends State<NotesScreen> {
             Text('${state.items.length} Notes · $sites Sites', style: textTheme.labelSmall?.copyWith(fontSize: 11.5)),
           ]);
         }),
-        actions: [SyncActionButton(onPressed: () => context.read<NoteBloc>().add(const NotesLoaded()))],
+        actions: const [SyncActionButton()],
       ),
       floatingActionButton: FloatingActionButton.extended(
         heroTag: 'notes-add-note',
@@ -73,7 +75,7 @@ class _NotesScreenState extends State<NotesScreen> {
     final sites = context.watch<SiteBloc>().state.items;
     return Wrap(spacing: 8, runSpacing: 8, children: [
       FilterChip(label: Text(_status?.label ?? 'All statuses'), selected: _status != null, onSelected: (_) async {
-        final picked = await showModalBottomSheet<NoteStatus?>(context: context, builder: (ctx) => SafeArea(child: ListView(children: [
+        final picked = await showModalBottomSheet<NoteStatus?>(context: context, builder: (ctx) => SafeArea(child: ListView(padding: const EdgeInsets.only(top: 12), children: [
           ListTile(title: const Text('All statuses'), onTap: () => Navigator.pop(ctx, null)),
           ...NoteStatus.values.map((s) => ListTile(title: Text(s.label), onTap: () => Navigator.pop(ctx, s))),
         ])));
@@ -81,7 +83,7 @@ class _NotesScreenState extends State<NotesScreen> {
         setState(() => _status = picked);
       }),
       FilterChip(label: Text(_siteId == null ? 'All sites' : sites.where((s)=>s.id==_siteId).map((s)=>s.name).firstOrNull ?? 'Site'), selected: _siteId != null, onSelected: (_) async {
-        final picked = await showModalBottomSheet<int?>(context: context, builder: (ctx) => SafeArea(child: ListView(children: [
+        final picked = await showModalBottomSheet<int?>(context: context, builder: (ctx) => SafeArea(child: ListView(padding: const EdgeInsets.only(top: 12), children: [
           ListTile(title: const Text('All sites'), onTap: () => Navigator.pop(ctx, -1)),
           ...sites.map((s) => ListTile(title: Text(s.name), subtitle: Text(s.customer.fullName), onTap: () => Navigator.pop(ctx, s.id))),
         ])));
@@ -105,8 +107,46 @@ class _NotesScreenState extends State<NotesScreen> {
   Future<void> _addNote() async {
     final sites = context.read<SiteBloc>().state.items;
     final defaultStatus = context.read<SettingsCubit>().state;
-    final note = await openNoteForm(context, sites: sites, defaultStatus: defaultStatus);
+    final note = await openNoteForm(
+      context,
+      sites: sites,
+      defaultStatus: defaultStatus,
+      onCaptureLocation: _captureLocation,
+      onPickPhoto: _pickPhoto,
+    );
     if (note == null || !mounted) return;
     context.read<NoteBloc>().add(NoteAdded(note));
+  }
+
+  Future<({double latitude, double longitude})?> _captureLocation(BuildContext context) async {
+    try {
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        if (mounted) ScaffoldMessenger.of(this.context).showSnackBar(const SnackBar(content: Text('Enable location services.')));
+        return null;
+      }
+      var permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+        if (mounted) ScaffoldMessenger.of(this.context).showSnackBar(const SnackBar(content: Text('Location permission denied.')));
+        return null;
+      }
+      final pos = await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: LocationAccuracy.high));
+      return (latitude: pos.latitude, longitude: pos.longitude);
+    } catch (_) {
+      if (mounted) ScaffoldMessenger.of(this.context).showSnackBar(const SnackBar(content: Text('Could not get location.')));
+      return null;
+    }
+  }
+
+  Future<String?> _pickPhoto(BuildContext context, ImageSource source) async {
+    try {
+      final picker = ImagePicker();
+      final file = await picker.pickImage(source: source, imageQuality: 85, maxWidth: 1920);
+      return file?.path;
+    } catch (_) {
+      if (mounted) ScaffoldMessenger.of(this.context).showSnackBar(const SnackBar(content: Text('Could not pick photo.')));
+      return null;
+    }
   }
 }

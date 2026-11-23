@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/theme/app_dimension.dart';
 import '../../../core/utils/extensions/button_style_extension.dart';
 import '../../../core/utils/validators.dart';
 import '../application/auth_bloc.dart';
@@ -82,6 +83,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 20),
                         FilledButton(onPressed: loading ? null : _submit, child: const Text('Sign in')).withLoading(loading),
+                        const SizedBox(height: 16),
+                        _DemoPanel(onUseDemo: loading ? null : () => context.read<AuthBloc>().add(const AuthDemoRequested())),
                         const SizedBox(height: 12),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -98,6 +101,64 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _DemoPanel extends StatelessWidget {
+  const _DemoPanel({required this.onUseDemo});
+
+  final VoidCallback? onUseDemo;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.md + 2),
+      decoration: BoxDecoration(
+        color: scheme.primaryContainer.withValues(alpha: 0.45),
+        borderRadius: BorderRadius.circular(AppRadius.sm),
+        border: Border.all(color: scheme.primary.withValues(alpha: 0.16)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.science_outlined, size: 14, color: scheme.primary),
+              const SizedBox(width: 6),
+              Text(
+                'DEMO MODE',
+                style: theme.textTheme.labelSmall?.copyWith(
+                  letterSpacing: 1,
+                  fontWeight: FontWeight.w700,
+                  color: scheme.primary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'No backend is configured yet, so accounts and data live on this device. Add your Spring Boot API URL in Settings to use the real server.',
+            style: theme.textTheme.bodySmall?.copyWith(fontSize: 11.5),
+          ),
+          const SizedBox(height: 2),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              onPressed: onUseDemo,
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                minimumSize: const Size(0, 32),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: const Text('Use the demo account'),
+            ),
+          ),
+        ],
       ),
     );
   }

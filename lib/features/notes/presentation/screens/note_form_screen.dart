@@ -283,7 +283,7 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(
             AppSpacing.xl,
-            0,
+            AppSpacing.lg,
             AppSpacing.xl,
             AppSpacing.xl,
           ),

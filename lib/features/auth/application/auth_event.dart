@@ -20,3 +20,4 @@ class AuthRegisterRequested extends AuthEvent {
   List<Object?> get props => [name, email, password];
 }
 class AuthLogoutRequested extends AuthEvent { const AuthLogoutRequested(); }
+class AuthDemoRequested extends AuthEvent { const AuthDemoRequested(); }

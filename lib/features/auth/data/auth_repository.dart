@@ -29,6 +29,16 @@ class AuthRepository {
     await _storage.setUser({'userId': map['userId'], 'email': map['email'], 'name': map['name']});
   }
 
+  Future<void> loginDemo() async {
+    await _storage.setToken('demo-local-token');
+    await _storage.setUser({
+      'userId': 0,
+      'email': 'demo@fieldnotes.local',
+      'name': 'Demo User',
+      'isDemo': true,
+    });
+  }
+
   Future<void> logout() async {
     await _storage.setToken(null);
     await _storage.setUser(null);
